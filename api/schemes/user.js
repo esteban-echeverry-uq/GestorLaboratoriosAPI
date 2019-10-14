@@ -8,22 +8,22 @@ const UserSchema = new Schema({
 		type: Date
 	},
 	email: {
-		required: 'Please add the email',
+		required: 'Please add the email.',
 		type: String,
 		unique: true
 	},
 	name: {
-		required: 'Please add the name',
+		required: 'Please add the name.',
 		type: String
 	},
 	password: {
-		required: 'Please add the password',
+		required: 'Please add the password.',
 		type: String
 	},
 	role: {
 		default: 'student',
 		enum: ['admin', 'student', 'teacher'],
-		required: 'The user needs a role',
+		required: 'The user needs a role.',
 		type: String
 	},
 });

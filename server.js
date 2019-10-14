@@ -6,10 +6,16 @@ const { DATABASE, PORT } = require('./api/configs/environments/dev');
 const app = express();
 
 // models
+require('./api/models/room');
+require('./api/models/space');
+require('./api/models/tool');
 require('./api/models/user');
 
 // defined routes
 const homeRoutes = require('./api/routes/home');
+const roomRoutes = require('./api/routes/room');
+const spaceRoutes = require('./api/routes/space');
+const toolRoutes = require('./api/routes/tool');
 const userRoutes = require('./api/routes/user');
 
 // mongoose instance connection url connection
@@ -28,6 +34,9 @@ app.use(morgan('combined'));
 
 // implementing routes
 homeRoutes(app);
+roomRoutes(app);
+spaceRoutes(app);
+toolRoutes(app);
 userRoutes(app);
 
 // starting server
