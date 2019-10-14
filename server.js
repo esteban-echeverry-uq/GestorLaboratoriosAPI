@@ -6,6 +6,7 @@ const { DATABASE, PORT, ENV } = require('./api/configs/config');
 const app = express();
 
 // models
+require('./api/models/reservation');
 require('./api/models/room');
 require('./api/models/space');
 require('./api/models/tool');
@@ -13,6 +14,7 @@ require('./api/models/user');
 
 // defined routes
 const homeRoutes = require('./api/routes/home');
+const reservationRoutes = require('./api/routes/reservation');
 const roomRoutes = require('./api/routes/room');
 const spaceRoutes = require('./api/routes/space');
 const toolRoutes = require('./api/routes/tool');
@@ -34,6 +36,7 @@ app.use(morgan('combined'));
 
 // implementing routes
 homeRoutes(app);
+reservationRoutes(app);
 roomRoutes(app);
 spaceRoutes(app);
 toolRoutes(app);
