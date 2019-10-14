@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
-const { DATABASE, PORT } = require('./api/configs/environments/dev');
+const { DATABASE, PORT, ENV } = require('./api/configs/config');
 const app = express();
 
 // models
@@ -20,7 +20,7 @@ const userRoutes = require('./api/routes/user');
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect(DATABASE.URL, {
+mongoose.connect(DATABASE, {
 	useCreateIndex: true,
 	useNewUrlParser: true,
 	useUnifiedTopology: true

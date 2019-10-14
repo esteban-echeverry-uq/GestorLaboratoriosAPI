@@ -7,7 +7,7 @@ const controller = {
 		const {	ERROR_GETTING_USERS } = controllerErrors;
 
 		try {
-			const rooms = await Room.find();
+			const rooms = await Room.find({ spaceID: req.params.spaceID });
 			res.send({ rooms, status: 'success' });
 		} catch (e) {
 			res.send({

@@ -7,7 +7,7 @@ const controller = {
 		const {	ERROR_GETTING_USERS } = controllerErrors;
 
 		try {
-			const tools = await Tool.find();
+			const tools = await Tool.find({ spaceID: req.params.spaceID });
 			res.send({ tools, status: 'success' });
 		} catch (e) {
 			res.send({
