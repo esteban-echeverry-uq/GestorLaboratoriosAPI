@@ -62,7 +62,7 @@ const controller = {
 		} = controllerErrors;
 
 		try {
-			const user = await User.updateOne(req.body);
+			const user = await User.findById(req.params.id);
 
 			if (!user) return res.send({
 				message: ERROR_GETTING_USER.MESSAGES.USER_NOT_FOUND,
@@ -70,7 +70,9 @@ const controller = {
 				status: 'error'
 			});
 
-			res.send({ user, status: 'success' });
+			await User.update({_id: user._id }, req.body);
+
+			res.send({ status: 'success' });
 		} catch (e) {
 			res.send({
 				message: e.message,

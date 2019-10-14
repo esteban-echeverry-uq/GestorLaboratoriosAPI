@@ -60,7 +60,7 @@ const controller = {
 		} = controllerErrors;
 
 		try {
-			const room = await Room.updateOne(req.body);
+			const room = await Room.findById(req.params.id);
 
 			if (!room) return res.send({
 				message: ERROR_GETTING_USER.MESSAGES.USER_NOT_FOUND,
@@ -68,7 +68,9 @@ const controller = {
 				status: 'error'
 			});
 
-			res.send({ room, status: 'success' });
+			await Room.update({_id: room._id }, req.body);
+
+			res.send({ status: 'success' });
 		} catch (e) {
 			res.send({
 				message: e.message,

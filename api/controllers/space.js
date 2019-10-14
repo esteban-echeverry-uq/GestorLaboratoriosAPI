@@ -60,7 +60,7 @@ const controller = {
 		} = controllerErrors;
 
 		try {
-			const space = await Space.updateOne(req.body);
+			const space = await Space.findById(req.params.id);
 
 			if (!space) return res.send({
 				message: ERROR_GETTING_USER.MESSAGES.USER_NOT_FOUND,
@@ -68,7 +68,9 @@ const controller = {
 				status: 'error'
 			});
 
-			res.send({ space, status: 'success' });
+			await Space.update({_id: space._id }, req.body);
+
+			res.send({ status: 'success' });
 		} catch (e) {
 			res.send({
 				message: e.message,

@@ -60,7 +60,7 @@ const controller = {
 		} = controllerErrors;
 
 		try {
-			const tool = await Tool.updateOne(req.body);
+			const tool = await Tool.findById(req.params.id);
 
 			if (!tool) return res.send({
 				message: ERROR_GETTING_USER.MESSAGES.USER_NOT_FOUND,
@@ -68,7 +68,9 @@ const controller = {
 				status: 'error'
 			});
 
-			res.send({ tool, status: 'success' });
+			await Tool.update({_id: tool._id }, req.body);
+
+			res.send({ status: 'success' });
 		} catch (e) {
 			res.send({
 				message: e.message,
