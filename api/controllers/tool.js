@@ -1,31 +1,31 @@
 const mongoose = require('mongoose');
 const { controllerErrors } = require('../helpers/errors');
 const Tool = mongoose.model('Tools');
+const databaseEntities = require('../configs/constants/databaseEntities');
+const errorsHelper = require('../helpers/errors');
+
+const controllerErrors = errorsHelper(databaseEntities.TOOL);
 
 const controller = {
 	async getAll(req, res) {
-		const {	ERROR_GETTING_USERS } = controllerErrors;
-
 		try {
 			const tools = await Tool.find({ spaceID: req.params.spaceID });
 			res.send({ tools, status: 'success' });
 		} catch (e) {
 			res.send({
 				message: e.message,
-				type: ERROR_GETTING_USERS.TYPE,
 				status: 'error'
 			});
 		}
 	},
 	async getByID(req, res) {
-		const {	ERROR_GETTING_USER } = controllerErrors;
+		const {	GETTING_ENTITY } = controllerErrors;
 
 		try {
 			const tool = await Tool.findById(req.params.id);
 
 			if (!tool) return res.send({
-				message: ERROR_GETTING_USER.MESSAGES.USER_NOT_FOUND,
-				type: ERROR_GETTING_USER.TYPE,
+				message: GETTING_ENTITY,
 				status: 'error'
 			});
 
@@ -33,14 +33,11 @@ const controller = {
 		} catch (e) {
 			res.send({
 				message: e.message,
-				type: ERROR_GETTING_USER.TYPE,
 				status: 'error'
 			});
 		}
 	},
 	async create(req, res) {
-		const { ERROR_CREATING_USER } = controllerErrors;
-
 		try {
 			const tool = new Tool(req.body);
 			await tool.save();
@@ -48,23 +45,18 @@ const controller = {
 		} catch (e) {
 			res.send({
 				message: e.message,
-				type: ERROR_CREATING_USER.TYPE,
 				status: 'error'
 			});
 		}
 	},
 	async update(req, res) {
-		const {
-			ERROR_GETTING_USER,
-			ERROR_UPDATING_USER
-		} = controllerErrors;
+		const { GETTING_ENTITY } = controllerErrors;
 
 		try {
 			const tool = await Tool.findById(req.params.id);
 
 			if (!tool) return res.send({
-				message: ERROR_GETTING_USER.MESSAGES.USER_NOT_FOUND,
-				type: ERROR_GETTING_USER.TYPE,
+				message: GETTING_ENTITY,
 				status: 'error'
 			});
 
@@ -74,23 +66,18 @@ const controller = {
 		} catch (e) {
 			res.send({
 				message: e.message,
-				type: ERROR_UPDATING_USER.TYPE,
 				status: 'error'
 			});
 		}
 	},
 	async destroy(req, res) {
-		const {
-			ERROR_GETTING_USER,
-			ERROR_DELETING_USER
-		} = controllerErrors;
+		const { GETTING_ENTITY } = controllerErrors;
 
 		try {
 			const tool = await Tool.findById(req.params.id);
 
 			if (!tool) return res.send({
-				message: ERROR_GETTING_USER.MESSAGES.USER_NOT_FOUND,
-				type: ERROR_GETTING_USER.TYPE,
+				message: GETTING_ENTITY,
 				status: 'error'
 			});
 
@@ -99,7 +86,6 @@ const controller = {
 		} catch (e) {
 			res.send({
 				message: e.message,
-				type: ERROR_DELETING_USER.TYPE,
 				status: 'error'
 			});
 		}
