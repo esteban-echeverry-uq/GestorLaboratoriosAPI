@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { controllerErrors } = require('../helpers/errors');
 const Room = mongoose.model('Rooms');
 const databaseEntitites = require('../configs/constants/databaseEntities');
 const errorsHelper = require('../helpers/errors');
