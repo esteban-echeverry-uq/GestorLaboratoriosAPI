@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
-const { controllerErrors } = require('../helpers/user');
 const Reservation = mongoose.model('Reservations');
 const Room = mongoose.model('Rooms');
 const Tool = mongoose.model('Tools');
 const reservationTypes = require('../configs/constants/reservationTypes');
+const databaseEntitites = require('../configs/constants/databaseEntities');
+const errorsHelper = require('../helpers/errors');
+
+const controllerErrors = errorsHelper(databaseEntitites.RESERVATION);
 
 const controller = {
 	async getAll(req, res) {
-		const {	ERROR_GETTING_USERS } = controllerErrors;
-
 		try {
 			const query = {};
 
@@ -20,48 +21,40 @@ const controller = {
 		} catch (e) {
 			res.send({
 				message: e.message,
-				type: ERROR_GETTING_USERS.TYPE,
 				status: 'error'
 			});
 		}
 	},
 	async getAllByElement(req, res) {
-		const {	ERROR_GETTING_USERS } = controllerErrors;
-
 		try {
 			const reservations = await Reservation.find({ elementID: req.params.elementID });
 			res.send({ reservations, status: 'success' });
 		} catch (e) {
 			res.send({
 				message: e.message,
-				type: ERROR_GETTING_USERS.TYPE,
 				status: 'error'
 			});
 		}
 	},
 	async getAllByUser(req, res) {
-		const {	ERROR_GETTING_USERS } = controllerErrors;
-
 		try {
 			const reservations = await Reservation.find({ userID: req.params.userID });
 			res.send({ reservations, status: 'success' });
 		} catch (e) {
 			res.send({
 				message: e.message,
-				type: ERROR_GETTING_USERS.TYPE,
 				status: 'error'
 			});
 		}
 	},
 	async getByID(req, res) {
-		const {	ERROR_GETTING_USER } = controllerErrors;
+		const {	GETTING_ENTITY } = controllerErrors;
 
 		try {
 			const reservation = await Reservation.findById(req.params.id);
 
 			if (!reservation) return res.send({
-				message: ERROR_GETTING_USER.MESSAGES.USER_NOT_FOUND,
-				type: ERROR_GETTING_USER.TYPE,
+				message: GETTING_ENTITY,
 				status: 'error'
 			});
 
@@ -69,15 +62,14 @@ const controller = {
 		} catch (e) {
 			res.send({
 				message: e.message,
-				type: ERROR_GETTING_USER.TYPE,
 				status: 'error'
 			});
 		}
 	},
 	async create(req, res) {
 		const {
-			ERROR_CREATING_USER,
-			ERROR_GETTING_USER
+			GETTING_ENTITY,
+			TIME_ALREADY_RESERVED
 		} = controllerErrors;
 
 		try {
@@ -87,8 +79,7 @@ const controller = {
 			const element = ElementModel.findById(req.params.elementID);
 
 			if (!element) return res.send({
-				message: ERROR_GETTING_USER.MESSAGES.USER_NOT_FOUND,
-				type: ERROR_GETTING_USER.TYPE,
+				message: GETTING_ENTITY,
 				status: 'error'
 			});
 
@@ -102,8 +93,7 @@ const controller = {
 			});
 
 			if (!elementReservations.length) return res.send({
-				message: ERROR_CREATING_USER.MESSAGES.USER_NOT_FOUND,
-				type: ERROR_CREATING_USER.TYPE,
+				message: TIME_ALREADY_RESERVED,
 				status: 'error'
 			});
 
@@ -112,23 +102,18 @@ const controller = {
 		} catch (e) {
 			res.send({
 				message: e.message,
-				type: ERROR_CREATING_USER.TYPE,
 				status: 'error'
 			});
 		}
 	},
 	async update(req, res) {
-		const {
-			ERROR_GETTING_USER,
-			ERROR_UPDATING_USER
-		} = controllerErrors;
+		const {	GETTING_ENTITY } = controllerErrors;
 
 		try {
 			const reservation = await Reservation.findById(req.params.id);
 
 			if (!reservation) return res.send({
-				message: ERROR_GETTING_USER.MESSAGES.USER_NOT_FOUND,
-				type: ERROR_GETTING_USER.TYPE,
+				message: GETTING_ENTITY,
 				status: 'error'
 			});
 
@@ -138,23 +123,18 @@ const controller = {
 		} catch (e) {
 			res.send({
 				message: e.message,
-				type: ERROR_UPDATING_USER.TYPE,
 				status: 'error'
 			});
 		}
 	},
 	async destroy(req, res) {
-		const {
-			ERROR_GETTING_USER,
-			ERROR_DELETING_USER
-		} = controllerErrors;
+		const {	GETTING_ENTITY } = controllerErrors;
 
 		try {
 			const reservation = await Reservation.findById(req.params.id);
 
 			if (!reservation) return res.send({
-				message: ERROR_GETTING_USER.MESSAGES.USER_NOT_FOUND,
-				type: ERROR_GETTING_USER.TYPE,
+				message: GETTING_ENTITY,
 				status: 'error'
 			});
 
@@ -163,7 +143,6 @@ const controller = {
 		} catch (e) {
 			res.send({
 				message: e.message,
-				type: ERROR_DELETING_USER.TYPE,
 				status: 'error'
 			});
 		}

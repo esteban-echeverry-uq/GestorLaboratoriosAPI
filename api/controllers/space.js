@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { controllerErrors } = require('../helpers/user');
+const { controllerErrors } = require('../helpers/errors');
 const Space = mongoose.model('Spaces');
 
 const controller = {
