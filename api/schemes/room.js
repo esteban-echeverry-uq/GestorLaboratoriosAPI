@@ -1,5 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const {
+	schemaErrors: {
+		rooms: {
+			NAME,
+			QR,
+			SPACE_ID
+		}
+	}
+} = require('../helpers/errors');
 
 const RoomSchema = new Schema({
 	created_date: {
@@ -10,15 +19,15 @@ const RoomSchema = new Schema({
 		type: String
 	},
 	name: {
-		required: 'Please add the name.',
+		required: NAME,
 		type: String
 	},
 	qr: {
-		required: 'Each room needs a QR code.',
+		required: QR,
 		type: String
 	},
 	spaceID: {
-		required: 'Each room needs a space to which belongs.',
+		required: SPACE_ID,
 		type: String
 	}
 });

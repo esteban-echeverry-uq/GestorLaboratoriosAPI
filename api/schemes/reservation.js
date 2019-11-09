@@ -1,5 +1,17 @@
 const mongoose = require('mongoose');
 const reservationTypes = require('../configs/constants/reservationTypes');
+const {
+	schemaErrors: {
+		reservations: {
+			DATE,
+			ELEMENT_ID,
+			END_TIME,
+			START_TIME,
+			USER_ID
+		}
+	}
+} = require('../helpers/errors');
+
 const Schema = mongoose.Schema;
 
 const ReservationSchema = new Schema({
@@ -8,29 +20,28 @@ const ReservationSchema = new Schema({
 		type: Date
 	},
 	date: {
-		required: 'Each reservation needs a date.',
+		required: DATE,
 		type: Date
 	},
 	elementID: {
-		required: 'Each reservation needs a room or tool.',
+		required: ELEMENT_ID,
 		type: String
 	},
 	elementType: {
 		default: 'room',
 		enum: Object.values(reservationTypes),
-		required: 'Each needs to define what is reserved.',
 		type: String
 	},
 	endTime: {
-		required: 'The reservation needs an ending time.',
+		required: END_TIME,
 		type: Number
 	},
 	startTime: {
-		required: 'The reservation needs a starting time.',
+		required: START_TIME,
 		type: Number
 	},
 	userID: {
-		required: 'Each reservation needs a user.',
+		required: USER_ID,
 		type: String
 	},
 });

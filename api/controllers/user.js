@@ -3,9 +3,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const User = mongoose.model('Users');
 const databaseEntitites = require('../configs/constants/databaseEntities');
-const errorsHelper = require('../helpers/errors');
-
-const controllerErrors = errorsHelper(databaseEntitites.USER);
+const { generalErrors } = require('../helpers/errors');
 
 const controller = {
 	async getAll(req, res) {
@@ -20,7 +18,7 @@ const controller = {
 		}
 	},
 	async getByID(req, res) {
-		const {	GETTING_ENTITY } = controllerErrors;
+		const {	GETTING_ENTITY } = generalErrors;
 
 		try {
 			const user = await User.findById(req.params.id);
@@ -51,7 +49,7 @@ const controller = {
 		}
 	},
 	async update(req, res) {
-		const { GETTING_ENTITY } = controllerErrors;
+		const { GETTING_ENTITY } = generalErrors;
 
 		try {
 			const user = await User.findById(req.params.id);
@@ -72,7 +70,7 @@ const controller = {
 		}
 	},
 	async destroy(req, res) {
-		const {	GETTING_ENTITY } = controllerErrors;
+		const {	GETTING_ENTITY } = generalErrors;
 
 		try {
 			const user = await User.findById(req.params.id);
@@ -95,7 +93,7 @@ const controller = {
 		const {
 			GETTING_ENTITY,
 			WHILE_LOGIN
-		} = controllerErrors;
+		} = generalErrors;
 
 		try {
 			const user = await User.findOne({ email: req.body.email });

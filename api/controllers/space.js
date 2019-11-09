@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 const Space = mongoose.model('Spaces');
 const databaseEntities = require('../configs/constants/databaseEntities');
-const errorsHelper = require('../helpers/errors');
-
-const controllerErrors = errorsHelper(databaseEntities.SPACE);
+const { generalErrors } = require('../helpers/errors');
 
 const controller = {
 	async getAll(req, res) {
@@ -18,7 +16,7 @@ const controller = {
 		}
 	},
 	async getByID(req, res) {
-		const {	GETTING_ENTITY } = controllerErrors;
+		const {	GETTING_ENTITY } = generalErrors;
 
 		try {
 			const space = await Space.findById(req.params.id);
@@ -49,8 +47,8 @@ const controller = {
 		}
 	},
 	async update(req, res) {
-		const { GETTING_ENTITY } = controllerErrors;
-
+		const { GETTING_ENTITY } = generalErrors;
+		
 		try {
 			const space = await Space.findById(req.params.id);
 
@@ -70,7 +68,7 @@ const controller = {
 		}
 	},
 	async destroy(req, res) {
-		const { GETTING_ENTITY } = controllerErrors;
+		const { GETTING_ENTITY } = generalErrors;
 
 		try {
 			const space = await Space.findById(req.params.id);

@@ -3,9 +3,8 @@ const QRCode = require('qrcode');
 const S3Service = require('../services/s3Service');
 const Room = mongoose.model('Rooms');
 const databaseEntitites = require('../configs/constants/databaseEntities');
-const errorsHelper = require('../helpers/errors');
+const { generalErrors } = require('../helpers/errors');
 
-const controllerErrors = errorsHelper(databaseEntitites.ROOM);
 const s3Service = new S3Service('room');
 
 const controller = {
@@ -21,7 +20,7 @@ const controller = {
 		}
 	},
 	async getByID(req, res) {
-		const {	GETTING_ENTITY } = controllerErrors;
+		const {	GETTING_ENTITY } = generalErrors;
 
 		try {
 			const room = await Room.findById(req.params.id);
@@ -61,7 +60,7 @@ const controller = {
 		}
 	},
 	async update(req, res) {
-		const { GETTING_ENTITY } = controllerErrors;
+		const { GETTING_ENTITY } = generalErrors;
 
 		try {
 			const room = await Room.findById(req.params.id);
@@ -82,7 +81,7 @@ const controller = {
 		}
 	},
 	async destroy(req, res) {
-		const { GETTING_ENTITY } = controllerErrors;
+		const { GETTING_ENTITY } = generalErrors;
 
 		try {
 			const room = await Room.findById(req.params.id);

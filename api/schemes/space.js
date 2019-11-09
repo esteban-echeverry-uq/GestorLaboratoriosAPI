@@ -1,5 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const {
+	schemaErrors: {
+		spaces: {
+			NAME
+		}
+	}
+} = require('../helpers/errors');
 
 const SpaceSchema = new Schema({
 	created_date: {
@@ -10,8 +17,19 @@ const SpaceSchema = new Schema({
 		type: String
 	},
 	name: {
-		required: 'Please add the name.',
+		required: NAME,
 		type: String
+	},
+	coordinate: {
+		type: {
+			longitude: {
+				type: String
+			},
+			latitude: {
+				type: String
+			}
+
+		}
 	}
 });
 

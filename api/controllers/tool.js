@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Tool = mongoose.model('Tools');
+const QRCode = require('qrcode');
 const S3Service = require('../services/s3Service');
 const databaseEntities = require('../configs/constants/databaseEntities');
-const errorsHelper = require('../helpers/errors');
+const { generalErrors } = require('../helpers/errors');
 
-const controllerErrors = errorsHelper(databaseEntities.TOOL);
 const s3Service = new S3Service('tool');
 
 const controller = {
@@ -20,7 +20,7 @@ const controller = {
 		}
 	},
 	async getByID(req, res) {
-		const {	GETTING_ENTITY } = controllerErrors;
+		const {	GETTING_ENTITY } = generalErrors;
 
 		try {
 			const tool = await Tool.findById(req.params.id);
@@ -60,7 +60,7 @@ const controller = {
 		}
 	},
 	async update(req, res) {
-		const { GETTING_ENTITY } = controllerErrors;
+		const { GETTING_ENTITY } = generalErrors;
 
 		try {
 			const tool = await Tool.findById(req.params.id);
@@ -81,7 +81,7 @@ const controller = {
 		}
 	},
 	async destroy(req, res) {
-		const { GETTING_ENTITY } = controllerErrors;
+		const { GETTING_ENTITY } = generalErrors;
 
 		try {
 			const tool = await Tool.findById(req.params.id);

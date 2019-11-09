@@ -1,5 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const {
+	schemaErrors: {
+		tools: {
+			NAME,
+			QR,
+			SPACE_ID
+		}
+	}
+} = require('../helpers/errors');
 
 const ToolSchema = new Schema({
 	created_date: {
@@ -11,15 +20,15 @@ const ToolSchema = new Schema({
 		type: String
 	},
 	name: {
-		required: 'Please add the name.',
+		required: NAME,
 		type: String
 	},
 	qr: {
-		required: 'Each tool needs a QR code.',
+		required: QR,
 		type: String
 	},
 	spaceID: {
-		required: 'Each room needs a space to which belongs.',
+		required: SPACE_ID,
 		type: String
 	}
 });

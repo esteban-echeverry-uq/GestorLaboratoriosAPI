@@ -3,10 +3,7 @@ const Reservation = mongoose.model('Reservations');
 const Room = mongoose.model('Rooms');
 const Tool = mongoose.model('Tools');
 const reservationTypes = require('../configs/constants/reservationTypes');
-const databaseEntitites = require('../configs/constants/databaseEntities');
-const errorsHelper = require('../helpers/errors');
-
-const controllerErrors = errorsHelper(databaseEntitites.RESERVATION);
+const { generalErrors, cleanDBError } = require('../helpers/errors');
 
 const controller = {
 	async getAll(req, res) {
@@ -20,7 +17,7 @@ const controller = {
 			res.send({ reservations, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message),
 				status: 'error'
 			});
 		}
@@ -31,7 +28,7 @@ const controller = {
 			res.send({ reservations, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message),
 				status: 'error'
 			});
 		}
@@ -42,13 +39,13 @@ const controller = {
 			res.send({ reservations, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message),
 				status: 'error'
 			});
 		}
 	},
 	async getByID(req, res) {
-		const {	GETTING_ENTITY } = controllerErrors;
+		const {	GETTING_ENTITY } = generalErrors;
 
 		try {
 			const reservation = await Reservation.findById(req.params.id);
@@ -61,7 +58,7 @@ const controller = {
 			res.send({ reservation, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message),
 				status: 'error'
 			});
 		}
@@ -70,12 +67,11 @@ const controller = {
 		const {
 			GETTING_ENTITY,
 			TIME_ALREADY_RESERVED
-		} = controllerErrors;
+		} = generalErrors;
 
 		try {
 			const reservation = new Reservation(req.body);
 			const ElementModel = reservation.type == reservationTypes.ROOM ? Room : Tool;
-
 			const element = ElementModel.findById(req.params.elementID);
 
 			if (!element) return res.send({
@@ -92,7 +88,7 @@ const controller = {
 				}
 			});
 
-			if (!elementReservations.length) return res.send({
+			if (elementReservations.length) return res.send({
 				message: TIME_ALREADY_RESERVED,
 				status: 'error'
 			});
@@ -101,13 +97,13 @@ const controller = {
 			res.send({ reservation, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message),
 				status: 'error'
 			});
 		}
 	},
 	async update(req, res) {
-		const {	GETTING_ENTITY } = controllerErrors;
+		const {	GETTING_ENTITY } = generalErrors;
 
 		try {
 			const reservation = await Reservation.findById(req.params.id);
@@ -122,13 +118,13 @@ const controller = {
 			res.send({ status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message),
 				status: 'error'
 			});
 		}
 	},
 	async destroy(req, res) {
-		const {	GETTING_ENTITY } = controllerErrors;
+		const {	GETTING_ENTITY } = generalErrors;
 
 		try {
 			const reservation = await Reservation.findById(req.params.id);
@@ -142,7 +138,7 @@ const controller = {
 			res.send({ status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message),
 				status: 'error'
 			});
 		}

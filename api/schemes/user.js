@@ -2,6 +2,15 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const userRoles = require('../configs/constants/userRoles');
 const Schema = mongoose.Schema;
+const {
+	schemaErrors: {
+		users: {
+			EMAIL,
+			NAME,
+			PASSWORD
+		}
+	}
+} = require('../helpers/errors');
 
 const UserSchema = new Schema({
 	created_date: {
@@ -9,22 +18,21 @@ const UserSchema = new Schema({
 		type: Date
 	},
 	email: {
-		required: 'Please add the email.',
+		required: EMAIL,
 		type: String,
 		unique: true
 	},
 	name: {
-		required: 'Please add the name.',
+		required: NAME,
 		type: String
 	},
 	password: {
-		required: 'Please add the password.',
+		required: PASSWORD,
 		type: String
 	},
 	role: {
 		default: 'student',
 		enum: Object.values(userRoles),
-		required: 'The user needs a role.',
 		type: String
 	},
 });
