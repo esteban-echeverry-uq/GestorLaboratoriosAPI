@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
+const QRCode = require('qrcode');
+const S3Service = require('../services/s3Service');
 const Room = mongoose.model('Rooms');
 const databaseEntitites = require('../configs/constants/databaseEntities');
 const errorsHelper = require('../helpers/errors');
 
 const controllerErrors = errorsHelper(databaseEntitites.ROOM);
+const s3Service = new S3Service('room');
 
 const controller = {
 	async getAll(req, res) {
@@ -39,6 +42,15 @@ const controller = {
 	async create(req, res) {
 		try {
 			const room = new Room(req.body);
+			const QR = await QRCode.toDataURL(room._id+'');
+			const amazonResponse = await s3Service.uploadImage(QR, room._id);
+
+			if (amazonResponse.status === 'error') return res.send({
+				message: amazonResponse.message,
+				status: 'error'
+			});
+
+			room.qr = amazonResponse.imageURL;
 			await room.save();
 			res.send({ room, status: 'success' });
 		} catch (e) {
@@ -77,6 +89,13 @@ const controller = {
 
 			if (!room) return res.send({
 				message: GETTING_ENTITY,
+				status: 'error'
+			});
+
+			const amazonResponse = await s3Service.deleteImage(room._id);
+
+			if (amazonResponse.status === 'error') return res.send({
+				message: amazonResponse.message,
 				status: 'error'
 			});
 
