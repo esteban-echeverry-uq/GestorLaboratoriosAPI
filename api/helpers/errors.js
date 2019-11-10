@@ -6,12 +6,14 @@ module.exports = {
 	},
 	generalErrors: {
 		GETTING_ENTITY: `El elemento que estas intentando obtener no existe.`,
+		NOT_READY_TO_CONFIRM: 'Puedes confirmar la reserva solo 15 min antes de la hora de inicio',
+		RESERVATION_NOT_PENDING: 'Esta reservación no se puede confirmar porque no esta pendiente',
+		TIME_ALREADY_EXPIRED: 'La reservación que intentas confirmar ya expiro.',
 		TIME_ALREADY_RESERVED: 'El tiempo que seleccionaste ya esta reservado.',
-		WHILE_LOGIN: 'El email o la constraseña no coinciden.',
+		WHILE_LOGIN: 'El email o la constraseña no coinciden.'
 	},
 	schemaErrors: {
 		reservations: {
-			DATE: 'Se debe agregar una fecha de reservación.',
 			ELEMENT_ID: 'La reservación debe tener una herramienta o salon al cual asignarla.',
 			END_TIME: 'La reservación necesita una hora de finalización.',
 			START_TIME: 'La reservación necesita una hora de inicio.',

@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
+const reservationStatuses = require('../configs/constants/reservationStatuses');
 const reservationTypes = require('../configs/constants/reservationTypes');
 const {
 	schemaErrors: {
 		reservations: {
-			DATE,
 			ELEMENT_ID,
 			END_TIME,
 			START_TIME,
@@ -19,16 +19,12 @@ const ReservationSchema = new Schema({
 		default: Date.now,
 		type: Date
 	},
-	date: {
-		required: DATE,
-		type: Date
-	},
 	elementID: {
 		required: ELEMENT_ID,
 		type: String
 	},
 	elementType: {
-		default: 'room',
+		default: reservationTypes.ROOM,
 		enum: Object.values(reservationTypes),
 		type: String
 	},
@@ -44,6 +40,11 @@ const ReservationSchema = new Schema({
 		required: USER_ID,
 		type: String
 	},
+	status: {
+		default: reservationStatuses.PENDING,
+		enum: Object.values(reservationStatuses),
+		type: String
+	}
 });
 
 module.exports = ReservationSchema;

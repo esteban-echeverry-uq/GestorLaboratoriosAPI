@@ -11,8 +11,11 @@ module.exports = function(app) {
 		.get(reservationController.getAllByElement)
 		.post(reservationController.create);
 
-	app.route('/api/elements/:elementID/reservations/:id')
+	app.route('/api/reservations/:reservationID')
 		.get(reservationController.getByID)
 		.put(reservationController.update)
 		.delete(reservationController.destroy);
+
+	app.route('/api/reservations/:reservationID/confirm')
+		.post(reservationController.confirm);
 };
