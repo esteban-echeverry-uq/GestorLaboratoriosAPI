@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "startNodemon": "nodemon server.js",
     "test": "test",
     "finishCompleteReservations": "node api/tasks/finishCompleteReservations.js",
     "cancelExpiredReservations": "node api/tasks/cancelExpiredReservations.js"
