@@ -1,3 +1,5 @@
+require('../models/reservation');
+
 const mongoose = require('mongoose');
 const Reservation = mongoose.model('Reservations');
 const reservationStatuses = require('../configs/constants/reservationStatuses');
