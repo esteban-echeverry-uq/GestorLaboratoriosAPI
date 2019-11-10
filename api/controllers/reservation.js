@@ -199,9 +199,4 @@ const controller = {
 	}
 };
 
-//TODO: Se debe correr un worker cada hora para iniciar la cuenta regresiva de las reservaciones que inician en esa hora
-//TODO: Se puede reservar antes de la hora, pero se tiene que validar que falten 15 min
-//TODO: El worker cancela (o elimina?) todas las reservaciones que no se confrimen 15 min despues de la reservacion
-//TODO: Las reservaciones confirmadas que lleguen a la hora final se marcan como finalizadas automaticamente
-
 module.exports = controller;

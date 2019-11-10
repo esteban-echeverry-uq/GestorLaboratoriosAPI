@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "test",
-    "reservationsCheck": "node api/tasks/reservationsCheck.js"
+    "finishCompleteReservations": "node api/tasks/finishCompleteReservations.js",
+    "cancelExpiredReservations": "node api/tasks/cancelExpiredReservations.js"
   },
   "repository": {
     "type": "git",
