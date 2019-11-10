@@ -31,15 +31,15 @@ module.exports = class S3Service {
 
 		const params = {
 			Bucket: BUCKET_NAME,
-			Key: `${this.itemType}-${itemID}.png`, // type is not required
+			Key: `${this.itemType}-${itemID}.png`,
 			Body: base64Data,
 			ACL: 'public-read',
-			ContentEncoding: 'base64', // required
-			ContentType: `image/${type}` // required. Notice the back ticks
+			ContentEncoding: 'base64',
+			ContentType: `image/${type}`
 		};
 
 		try {
-			const { Location, Key } = await s3.upload(params).promise();
+			const { Location } = await s3.upload(params).promise();
 			location = Location;
 		} catch (error) {
 			return {
@@ -58,6 +58,50 @@ module.exports = class S3Service {
 		const params = {
 			Bucket: BUCKET_NAME,
 			Key: `${this.itemType}-${itemID}.png`
+		};
+
+		try {
+			await s3.deleteObject(params).promise();
+			return { status: 'success' };
+		} catch (error) {
+			return {
+				status: 'error',
+				message: error.message
+			};
+		}
+	}
+
+	async uploadManual(manual, itemID) {
+		const params = {
+			Bucket: BUCKET_NAME,
+			Key: `${itemID}.pdf`,
+			Body: manual,
+			ACL: 'public-read',
+			ContentType: 'application/pdf'
+		};
+
+		let location = '';
+
+		try {
+			const { Location } = await s3.upload(params).promise();
+			location = Location;
+		} catch (error) {
+			return {
+				status: 'error',
+				message: error.message
+			};
+		}
+
+		return {
+			status: 'success',
+			manualURL: location
+		};
+	}
+
+	async deleteManual(itemID) {
+		const params = {
+			Bucket: BUCKET_NAME,
+			Key: `${itemID}.pdf`
 		};
 
 		try {

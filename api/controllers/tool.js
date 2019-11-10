@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Tool = mongoose.model('Tools');
 const QRCode = require('qrcode');
 const S3Service = require('../services/s3Service');
-const databaseEntities = require('../configs/constants/databaseEntities');
 const { generalErrors } = require('../helpers/errors');
 
 const s3Service = new S3Service('tool');
@@ -23,7 +22,7 @@ const controller = {
 		const {	GETTING_ENTITY } = generalErrors;
 
 		try {
-			const tool = await Tool.findById(req.params.id);
+			const tool = await Tool.findById(req.params.toolID);
 
 			if (!tool) return res.send({
 				message: GETTING_ENTITY,
@@ -63,7 +62,7 @@ const controller = {
 		const { GETTING_ENTITY } = generalErrors;
 
 		try {
-			const tool = await Tool.findById(req.params.id);
+			const tool = await Tool.findById(req.params.toolID);
 
 			if (!tool) return res.send({
 				message: GETTING_ENTITY,
@@ -84,7 +83,7 @@ const controller = {
 		const { GETTING_ENTITY } = generalErrors;
 
 		try {
-			const tool = await Tool.findById(req.params.id);
+			const tool = await Tool.findById(req.params.toolID);
 
 			if (!tool) return res.send({
 				message: GETTING_ENTITY,
@@ -100,6 +99,64 @@ const controller = {
 
 			await tool.remove();
 			res.send({ status: 'success' });
+		} catch (e) {
+			res.send({
+				message: e.message,
+				status: 'error'
+			});
+		}
+	},
+	async addManual(req, res) {
+		const {GETTING_ENTITY} = generalErrors;
+
+		try {
+			const tool = await Tool.findById(req.params.toolID);
+
+			if (!tool) return res.send({
+				message: GETTING_ENTITY,
+				status: 'error'
+			});
+
+			const file = req.files[0];
+
+			const amazonResponse = await s3Service.uploadManual(file, tool._id);
+
+			if (amazonResponse.status === 'error') return res.send({
+				message: amazonResponse.message,
+				status: 'error'
+			});
+
+			tool.manual = amazonResponse.manualURL;
+			await tool.save();
+			res.send({tool, status: 'success'});
+		} catch (e) {
+			res.send({
+				message: e.message,
+				status: 'error'
+			});
+		}
+	},
+	async removeManual(req, res) {
+		const {GETTING_ENTITY} = generalErrors;
+
+		try {
+			const tool = await Tool.findById(req.params.toolID);
+
+			if (!tool) return res.send({
+				message: GETTING_ENTITY,
+				status: 'error'
+			});
+
+			const amazonResponse = await s3Service.deleteManual(tool._id);
+
+			if (amazonResponse.status === 'error') return res.send({
+				message: amazonResponse.message,
+				status: 'error'
+			});
+
+			tool.manual = null;
+			await tool.save();
+			res.send({status: 'success'});
 		} catch (e) {
 			res.send({
 				message: e.message,

@@ -27,6 +27,9 @@ const ToolSchema = new Schema({
 		required: QR,
 		type: String
 	},
+	manual: {
+		type: String
+	},
 	spaceID: {
 		required: SPACE_ID,
 		type: String

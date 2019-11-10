@@ -5,7 +5,7 @@ module.exports = function(app) {
 		.get(roomController.getAll)
 		.post(roomController.create);
 
-	app.route('/api/spaces/:spaceID/rooms/:id')
+	app.route('/api/rooms/:id')
 		.get(roomController.getByID)
 		.put(roomController.update)
 		.delete(roomController.destroy);
