@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "test"
+    "test": "test",
+    "reservationsCheck": "node api/tasks/reservationsCheck.js"
   },
   "repository": {
     "type": "git",
