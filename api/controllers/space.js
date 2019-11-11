@@ -6,6 +6,7 @@ const controller = {
 	async getAll(req, res) {
 		try {
 			const spaces = await Space.find();
+			console.log(spaces);
 			res.send({ spaces, status: 'success' });
 		} catch (e) {
 			res.send({
@@ -18,7 +19,7 @@ const controller = {
 		const {	GETTING_ENTITY } = generalErrors;
 
 		try {
-			const space = await Space.findById(req.params.id);
+			const space = await Space.findById(req.params.spaceID);
 
 			if (!space) return res.send({
 				message: GETTING_ENTITY,
@@ -49,7 +50,7 @@ const controller = {
 		const { GETTING_ENTITY } = generalErrors;
 		
 		try {
-			const space = await Space.findById(req.params.id);
+			const space = await Space.findById(req.params.spaceID);
 
 			if (!space) return res.send({
 				message: GETTING_ENTITY,
@@ -70,7 +71,7 @@ const controller = {
 		const { GETTING_ENTITY } = generalErrors;
 
 		try {
-			const space = await Space.findById(req.params.id);
+			const space = await Space.findById(req.params.spaceID);
 
 			if (!space) return res.send({
 				message: GETTING_ENTITY,

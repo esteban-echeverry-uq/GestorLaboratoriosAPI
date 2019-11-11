@@ -90,7 +90,7 @@ const controller = {
 				status: 'error'
 			});
 
-			const amazonResponse = await s3Service.deleteImage(room._id);
+			const amazonResponse = await s3Service.deleteImage(tool._id);
 
 			if (amazonResponse.status === 'error') return res.send({
 				message: amazonResponse.message,

@@ -5,7 +5,7 @@ module.exports = function(app) {
 		.get(spaceController.getAll)
 		.post(spaceController.create);
 
-	app.route('/api/spaces/:id')
+	app.route('/api/spaces/:spaceID')
 		.get(spaceController.getByID)
 		.put(spaceController.update)
 		.delete(spaceController.destroy);
