@@ -14,7 +14,7 @@ const controller = {
 				message: e.message,
 				status: 'error'
 			});
-		}
+		} 
 	},
 	async getByID(req, res) {
 		const {	GETTING_ENTITY } = generalErrors;
