@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const QRCode = require('qrcode');
 const S3Service = require('../services/s3Service');
 const Room = mongoose.model('Rooms');
-const databaseEntitites = require('../configs/constants/databaseEntities');
 const { generalErrors } = require('../helpers/errors');
 
 const s3Service = new S3Service('room');
