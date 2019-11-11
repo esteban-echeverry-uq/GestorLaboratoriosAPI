@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const User = mongoose.model('Users');
-const databaseEntitites = require('../configs/constants/databaseEntities');
 const { generalErrors } = require('../helpers/errors');
 
 const controller = {

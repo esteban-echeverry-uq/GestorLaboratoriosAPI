@@ -39,7 +39,7 @@ module.exports = class S3Service {
 		};
 
 		try {
-			const { Location, Key } = await s3.upload(params).promise();
+			const {Location} = await s3.upload(params).promise();
 			location = Location;
 		} catch (error) {
 			return {
