@@ -81,9 +81,8 @@ const controller = {
 			});
 
 			const elementReservations = Reservation.find({
-				date: { "$gte": Date.now() },
 				elementID: element._id,
-				timeBegin: {
+				startTime: {
 					"$gte": reservation.startTime,
 					"$lt": reservation.endTime
 				}

@@ -90,16 +90,13 @@ const controller = {
 		}
 	},
 	async login(req, res) {
-		const {
-			GETTING_ENTITY,
-			WHILE_LOGIN
-		} = generalErrors;
+		const {	WHILE_LOGIN } = generalErrors;
 
 		try {
 			const user = await User.findOne({ email: req.body.email });
 
 			if (!user) return res.send({
-				message: GETTING_ENTITY,
+				message: WHILE_LOGIN,
 				status: 'error'
 			});
 
@@ -116,7 +113,6 @@ const controller = {
 			});
 
 			res.send({ user, token, status: 'success' });
-
 		} catch (e) {
 			res.send({
 				message: e.message,
