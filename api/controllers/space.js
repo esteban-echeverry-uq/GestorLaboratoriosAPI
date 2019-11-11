@@ -6,7 +6,6 @@ const controller = {
 	async getAll(req, res) {
 		try {
 			const spaces = await Space.find();
-			console.log(spaces);
 			res.send({ spaces, status: 'success' });
 		} catch (e) {
 			res.send({
