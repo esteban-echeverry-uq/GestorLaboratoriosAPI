@@ -1,4 +1,4 @@
 module.exports = {
-	TOOL: 'tool',
-	ROOM: 'room'
+	TOOL: 'Tools',
+	ROOM: 'Rooms'
 };

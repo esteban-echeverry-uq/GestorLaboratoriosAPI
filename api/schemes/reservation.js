@@ -19,9 +19,10 @@ const ReservationSchema = new Schema({
 		default: Date.now,
 		type: Date
 	},
-	elementID: {
+	element: {
 		required: ELEMENT_ID,
-		type: String
+		type: Schema.Types.ObjectId,
+		refPath: 'elementType'
 	},
 	elementType: {
 		default: reservationTypes.ROOM,

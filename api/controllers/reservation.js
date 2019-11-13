@@ -12,7 +12,7 @@ const controller = {
 			const query = {};
 
 			if (req.query.userID) query['userID'] = req.query.userID;
-			if (req.query.elementID) query['elementID'] = req.query.elementID;
+			if (req.query.elementID) query['element'] = req.query.elementID;
 
 			const reservations = await Reservation.find(query);
 			res.send({ reservations, status: 'success' });
@@ -25,7 +25,7 @@ const controller = {
 	},
 	async getAllByElement(req, res) {
 		try {
-			const reservations = await Reservation.find({ elementID: req.params.elementID });
+			const reservations = await Reservation.find({ element: req.params.elementID });
 			res.send({ reservations, status: 'success' });
 		} catch (e) {
 			res.send({
@@ -36,7 +36,8 @@ const controller = {
 	},
 	async getAllByUser(req, res) {
 		try {
-			const reservations = await Reservation.find({ userID: req.params.userID });
+			const reservations = await Reservation.find({ userID: req.params.userID }).populate('element');
+
 			res.send({ reservations, status: 'success' });
 		} catch (e) {
 			res.send({
@@ -81,7 +82,7 @@ const controller = {
 			});
 
 			const elementReservations = Reservation.find({
-				elementID: element._id,
+				element: element._id,
 				startTime: {
 					"$gte": reservation.startTime,
 					"$lt": reservation.endTime
