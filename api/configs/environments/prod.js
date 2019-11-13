@@ -1,5 +1,6 @@
 module.exports = {
 	DATABASE: process.env.MONGODB_URI,
+	DATABASE_TEST: process.env.MONGOLAB_CHARCOAL_URI,
 	PORT: process.env.PORT,
 	AMAZON_SECRET_KEY: process.env.AMAZON_SECRET_KEY,
 	AMAZON_PUBLIC_KEY: process.env.AMAZON_PUBLIC_KEY,

@@ -4,7 +4,7 @@
   "description": "Software project for the management of the database and services",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "startNodemon": "nodemon server.js",
     "test": "jest",
     "finishCompleteReservations": "node api/tasks/finishCompleteReservations.js",

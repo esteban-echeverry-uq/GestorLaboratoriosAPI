@@ -3,6 +3,7 @@ require('../../models/space');
 const mongoose = require('mongoose');
 const Space = mongoose.model('Spaces');
 const SpaceController = require('../../controllers/space');
+const { DATABASE_TEST } = require('../../configs/config');
 
 let response, spaceID;
 
@@ -21,7 +22,7 @@ const res = {
 describe('Space Controller Test', () => {
 	beforeAll(async () => {
 		response = {};
-		await mongoose.connect('mongodb://localhost/laboratoryManagementTest', {
+		await mongoose.connect(DATABASE_TEST, {
 			useNewUrlParser: true,
 			useCreateIndex: true,
 			useUnifiedTopology: true
