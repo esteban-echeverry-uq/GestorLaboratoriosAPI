@@ -24,8 +24,18 @@ const controller = {
 		}
 	},
 	async getAllByElement(req, res) {
+		const today = new Date();
+		today.setHours(0, 0, 0);
+
+		console.log(today);
 		try {
-			const reservations = await Reservation.find({ element: req.params.elementID });
+			const reservations = await Reservation.find({
+				element: req.params.elementID,
+				status: {$in: [ reservationStatuses.PENDING, reservationStatuses.CONFIRMED ]},
+				created_date: {
+					"$gte": today
+				}
+			});
 			res.send({ reservations, status: 'success' });
 		} catch (e) {
 			res.send({
