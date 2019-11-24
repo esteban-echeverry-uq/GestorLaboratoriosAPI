@@ -24,17 +24,38 @@ const controller = {
 		}
 	},
 	async getAllByElement(req, res) {
-		const today = new Date();
-		today.setHours(0, 0, 0);
+		let date = {};
 
-		console.log(today);
+		if (req.query.date) {
+			const reservationDate = new Date(req.query.date);
+			const minDate = new Date(
+				reservationDate.getFullYear(),
+				reservationDate.getMonth(),
+				reservationDate.getDate(),
+				0,
+				0,
+				0
+			);
+			const maxDate = new Date(
+				reservationDate.getFullYear(),
+				reservationDate.getMonth(),
+				reservationDate.getDate(),
+				23,
+				59,
+				59
+			);
+
+			date = {
+				"$gte": minDate,
+				"$lt": maxDate
+			};
+		}
+
 		try {
 			const reservations = await Reservation.find({
 				element: req.params.elementID,
 				status: {$in: [ reservationStatuses.PENDING, reservationStatuses.CONFIRMED ]},
-				created_date: {
-					"$gte": today
-				}
+				date
 			});
 			res.send({ reservations, status: 'success' });
 		} catch (e) {
@@ -91,11 +112,33 @@ const controller = {
 				status: 'error'
 			});
 
+			const minDate = new Date(
+				reservation.date.getFullYear(),
+				reservation.date.getMonth(),
+				reservation.date.getDate(),
+				0,
+				0,
+				0
+			);
+
+			const maxDate = new Date(
+				reservation.date.getFullYear(),
+				reservation.date.getMonth(),
+				reservation.date.getDate(),
+				23,
+				59,
+				59
+			);
+
 			const elementReservations = Reservation.find({
 				element: element._id,
 				startTime: {
 					"$gte": reservation.startTime,
 					"$lt": reservation.endTime
+				},
+				date: {
+					"$gte": minDate,
+					"$lt": maxDate
 				}
 			});
 
@@ -176,6 +219,38 @@ const controller = {
 			});
 
 			const today = new Date();
+			const minDate = new Date(
+				today.getFullYear(),
+				today.getMonth(),
+				today.getDate(),
+				0,
+				0,
+				0
+			);
+			const maxDate = new Date(
+				today.getFullYear(),
+				today.getMonth(),
+				today.getDate(),
+				23,
+				59,
+				59
+			);
+
+			if (reservation.date < minDate) {
+				reservation.status = reservationStatuses.FINISHED;
+				await reservation.save();
+
+				return res.send({
+					message: TIME_ALREADY_EXPIRED,
+					status: 'error'
+				});
+			}
+
+			if (reservation.date > maxDate) return res.send({
+				message: NOT_READY_TO_CONFIRM,
+				status: 'error'
+			});
+
 			const currentTime = today.getHours() + today.getMinutes() / 60;
 			const minTime = reservation.startTime - 0.25;
 			const maxTime = reservation.startTime + 0.25;
@@ -190,12 +265,10 @@ const controller = {
 				});
 			}
 
-			if (currentTime < minTime) {
-				return res.send({
-					message: NOT_READY_TO_CONFIRM,
-					status: 'error'
-				});
-			}
+			if (currentTime < minTime) return res.send({
+				message: NOT_READY_TO_CONFIRM,
+				status: 'error'
+			});
 
 			reservation.status = reservationStatuses.CONFIRMED;
 			await reservation.save();

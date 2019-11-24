@@ -5,6 +5,7 @@ const {
 	schemaErrors: {
 		reservations: {
 			ELEMENT_ID,
+			DATE,
 			END_TIME,
 			START_TIME,
 			USER_ID
@@ -36,6 +37,10 @@ const ReservationSchema = new Schema({
 	startTime: {
 		required: START_TIME,
 		type: Number
+	},
+	date: {
+		required: DATE,
+		type: Date
 	},
 	userID: {
 		required: USER_ID,

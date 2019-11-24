@@ -15,6 +15,7 @@ module.exports = {
 	schemaErrors: {
 		reservations: {
 			ELEMENT_ID: 'La reservación debe tener una herramienta o salon al cual asignarla.',
+			DATE: 'La reservación necesita una fecha de inicio.',
 			END_TIME: 'La reservación necesita una hora de finalización.',
 			START_TIME: 'La reservación necesita una hora de inicio.',
 			USER_ID: 'El usuario debe ser asignado.'
