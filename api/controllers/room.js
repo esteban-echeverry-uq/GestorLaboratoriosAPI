@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const QRCode = require('qrcode');
 const S3Service = require('../services/s3Service');
 const Room = mongoose.model('Rooms');
-const { generalErrors } = require('../helpers/errors');
+const { generalErrors, cleanDBError } = require('../helpers/errors');
 
 const s3Service = new S3Service('room');
 
@@ -13,7 +13,7 @@ const controller = {
 			res.send({ rooms, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -32,7 +32,7 @@ const controller = {
 			res.send({ room, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -53,7 +53,7 @@ const controller = {
 			res.send({ room, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -74,7 +74,7 @@ const controller = {
 			res.send({ status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -101,7 +101,7 @@ const controller = {
 			res.send({ status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}

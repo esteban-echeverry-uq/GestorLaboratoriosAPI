@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Space = mongoose.model('Spaces');
-const { generalErrors } = require('../helpers/errors');
+const { generalErrors, cleanDBError } = require('../helpers/errors');
 
 const controller = {
 	async getAll(req, res) {
@@ -9,7 +9,7 @@ const controller = {
 			res.send({ spaces, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -28,7 +28,7 @@ const controller = {
 			res.send({ space, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -40,7 +40,7 @@ const controller = {
 			res.send({ space, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -61,7 +61,7 @@ const controller = {
 			res.send({ status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -81,7 +81,7 @@ const controller = {
 			res.send({ status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
