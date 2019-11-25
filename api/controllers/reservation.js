@@ -151,7 +151,7 @@ const controller = {
 			res.send({ reservation, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: cleanDBError(e.message),
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
