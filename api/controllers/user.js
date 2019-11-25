@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const User = mongoose.model('Users');
-const { generalErrors } = require('../helpers/errors');
+const { generalErrors, cleanDBError } = require('../helpers/errors');
 
 const controller = {
 	async getAll(req, res) {
@@ -11,7 +11,7 @@ const controller = {
 			res.send({ users, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		} 
@@ -30,7 +30,7 @@ const controller = {
 			res.send({ user, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -42,7 +42,7 @@ const controller = {
 			res.send({ user, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -63,7 +63,7 @@ const controller = {
 			res.send({ status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -83,7 +83,7 @@ const controller = {
 			res.send({ status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -114,7 +114,7 @@ const controller = {
 			res.send({ user, token, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
@@ -134,7 +134,7 @@ const controller = {
 			res.send({ user, token, status: 'success' });
 		} catch (e) {
 			res.send({
-				message: e.message,
+				message: cleanDBError(e.message) || e.message,
 				status: 'error'
 			});
 		}
