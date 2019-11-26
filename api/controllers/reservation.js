@@ -9,7 +9,10 @@ const { generalErrors, cleanDBError } = require('../helpers/errors');
 const controller = {
 	async getAll(req, res) {
 		try {
-			const reservations = await Reservation.find().populate('element');
+			const reservations = await Reservation.find().sort({
+				date: -1,
+				startTime: 1
+			}).populate('element');
 			res.send({ reservations, status: 'success' });
 		} catch (e) {
 			res.send({
@@ -60,7 +63,12 @@ const controller = {
 	},
 	async getAllByUser(req, res) {
 		try {
-			const reservations = await Reservation.find({ userID: req.params.userID }).populate('element');
+			const reservations = await Reservation.find({
+				userID: req.params.userID
+			}).sort({
+				date: -1,
+				startTime: 1
+			}).populate('element');
 
 			res.send({ reservations, status: 'success' });
 		} catch (e) {
@@ -113,10 +121,6 @@ const controller = {
 				date[2] * 1,
 				12
 			);
-
-			console.log(req.body.date);
-			console.log(reservation.date);
-			console.log(reservation.date.toString());
 
 			const elementReservations = await Reservation.find({
 				element: element._id,
@@ -233,10 +237,6 @@ const controller = {
 				23, 59, 59
 			);
 
-			console.log(reservation.date.toString());
-			console.log(minDate.toString());
-			console.log(maxDate.toString());
-
 			if (reservation.date < minDate) {
 				reservation.status = reservationStatuses.FINISHED;
 				await reservation.save();
@@ -252,28 +252,24 @@ const controller = {
 				status: 'error'
 			});
 
-			const currentTime = today.getHours() + today.getMinutes() / 60 - 5;
-			const minTime = reservation.startTime - 0.25;
-			const maxTime = reservation.startTime + 0.25;
-
-			console.log(currentTime);
-			console.log(minTime);
-			console.log(maxTime);
-
-			if (currentTime > maxTime) {
-				reservation.status = reservationStatuses.FINISHED;
-				await reservation.save();
-
-				return res.send({
-					message: TIME_ALREADY_EXPIRED,
-					status: 'error'
-				});
-			}
-
-			if (currentTime < minTime) return res.send({
-				message: NOT_READY_TO_CONFIRM,
-				status: 'error'
-			});
+			// const currentTime = today.getHours() + today.getMinutes() / 60 - 5;
+			// const minTime = reservation.startTime - 0.25;
+			// const maxTime = reservation.startTime + 0.25;
+			//
+			// if (currentTime > maxTime) {
+			// 	reservation.status = reservationStatuses.FINISHED;
+			// 	await reservation.save();
+			//
+			// 	return res.send({
+			// 		message: TIME_ALREADY_EXPIRED,
+			// 		status: 'error'
+			// 	});
+			// }
+			//
+			// if (currentTime < minTime) return res.send({
+			// 	message: NOT_READY_TO_CONFIRM,
+			// 	status: 'error'
+			// });
 
 			reservation.status = reservationStatuses.CONFIRMED;
 			await reservation.save();
