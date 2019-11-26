@@ -233,6 +233,10 @@ const controller = {
 				23, 59, 59
 			);
 
+			console.log(reservation.date.toString());
+			console.log(minDate.toString());
+			console.log(maxDate.toString());
+
 			if (reservation.date < minDate) {
 				reservation.status = reservationStatuses.FINISHED;
 				await reservation.save();
@@ -252,7 +256,9 @@ const controller = {
 			const minTime = reservation.startTime - 0.25;
 			const maxTime = reservation.startTime + 0.25;
 
-			console.log('pass first validation');
+			console.log(currentTime);
+			console.log(minTime);
+			console.log(maxTime);
 
 			if (currentTime > maxTime) {
 				reservation.status = reservationStatuses.FINISHED;
