@@ -252,7 +252,7 @@ const controller = {
 				status: 'error'
 			});
 
-			const currentTime = today.getHours() + today.getMinutes() / 60;
+			const currentTime = today.getHours() + today.getMinutes() / 60 - 5;
 			const minTime = reservation.startTime - 0.25;
 			const maxTime = reservation.startTime + 0.25;
 
