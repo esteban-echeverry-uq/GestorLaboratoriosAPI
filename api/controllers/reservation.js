@@ -9,12 +9,7 @@ const { generalErrors, cleanDBError } = require('../helpers/errors');
 const controller = {
 	async getAll(req, res) {
 		try {
-			const query = {};
-
-			if (req.query.userID) query['userID'] = req.query.userID;
-			if (req.query.elementID) query['element'] = req.query.elementID;
-
-			const reservations = await Reservation.find(query);
+			const reservations = await Reservation.find().populate('element');
 			res.send({ reservations, status: 'success' });
 		} catch (e) {
 			res.send({
@@ -32,8 +27,6 @@ const controller = {
 				reservationDate.getFullYear(),
 				reservationDate.getMonth(),
 				reservationDate.getDate(),
-				0,
-				0,
 				0
 			);
 			const maxDate = new Date(
@@ -104,42 +97,50 @@ const controller = {
 
 		try {
 			const reservation = new Reservation(req.body);
-			const ElementModel = reservation.type == reservationTypes.ROOM ? Room : Tool;
-			const element = ElementModel.findById(req.params.elementID);
+			const ElementModel = reservation.elementType == reservationTypes.ROOM ? Room : Tool;
+			const element = await ElementModel.findById(req.params.elementID);
 
 			if (!element) return res.send({
 				message: GETTING_ENTITY,
 				status: 'error'
 			});
 
-			const minDate = new Date(
-				reservation.date.getFullYear(),
-				reservation.date.getMonth(),
-				reservation.date.getDate(),
-				0,
-				0,
-				0
+			const date = req.body.date.split('-');
+
+			reservation.date = new Date(
+				date[0] * 1,
+				date[1] * 1 - 1,
+				date[2] * 1,
+				12
 			);
 
-			const maxDate = new Date(
-				reservation.date.getFullYear(),
-				reservation.date.getMonth(),
-				reservation.date.getDate(),
-				23,
-				59,
-				59
-			);
+			console.log(req.body.date);
+			console.log(reservation.date);
+			console.log(reservation.date.toString());
 
-			const elementReservations = Reservation.find({
+			const elementReservations = await Reservation.find({
 				element: element._id,
-				startTime: {
-					"$gte": reservation.startTime,
-					"$lt": reservation.endTime
-				},
-				date: {
-					"$gte": minDate,
-					"$lt": maxDate
-				}
+				date: reservation.date,
+				$or:[
+					{
+						startTime: {
+							"$gte": reservation.startTime,
+							"$lt": reservation.endTime
+						}
+					},
+					{
+						endTime: {
+							"$gte": reservation.startTime,
+							"$lt": reservation.endTime
+						}
+					},
+					{
+						startTime: reservation.startTime
+					},
+					{
+						endTime: reservation.endTime
+					}
+				]
 			});
 
 			if (elementReservations.length) return res.send({
@@ -223,24 +224,14 @@ const controller = {
 				today.getFullYear(),
 				today.getMonth(),
 				today.getDate(),
-				0,
-				0,
 				0
 			);
 			const maxDate = new Date(
 				today.getFullYear(),
 				today.getMonth(),
 				today.getDate(),
-				23,
-				59,
-				59
+				23, 59, 59
 			);
-
-			console.log('first validation');
-
-			console.log(reservation.date);
-			console.log(minDate);
-			console.log(maxDate);
 
 			if (reservation.date < minDate) {
 				reservation.status = reservationStatuses.FINISHED;
