@@ -252,24 +252,24 @@ const controller = {
 				status: 'error'
 			});
 
-			// const currentTime = today.getHours() + today.getMinutes() / 60 - 5;
-			// const minTime = reservation.startTime - 0.25;
-			// const maxTime = reservation.startTime + 0.25;
-			//
-			// if (currentTime > maxTime) {
-			// 	reservation.status = reservationStatuses.FINISHED;
-			// 	await reservation.save();
-			//
-			// 	return res.send({
-			// 		message: TIME_ALREADY_EXPIRED,
-			// 		status: 'error'
-			// 	});
-			// }
-			//
-			// if (currentTime < minTime) return res.send({
-			// 	message: NOT_READY_TO_CONFIRM,
-			// 	status: 'error'
-			// });
+			const currentTime = today.getHours() + today.getMinutes() / 60 - 5;
+			const minTime = reservation.startTime - 0.25;
+			const maxTime = reservation.startTime + 0.25;
+
+			if (currentTime > maxTime) {
+				reservation.status = reservationStatuses.FINISHED;
+				await reservation.save();
+
+				return res.send({
+					message: TIME_ALREADY_EXPIRED,
+					status: 'error'
+				});
+			}
+
+			if (currentTime < minTime) return res.send({
+				message: NOT_READY_TO_CONFIRM,
+				status: 'error'
+			});
 
 			reservation.status = reservationStatuses.CONFIRMED;
 			await reservation.save();
